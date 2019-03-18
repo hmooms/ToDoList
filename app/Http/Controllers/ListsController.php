@@ -29,7 +29,15 @@ class ListsController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+        ]);
+
+
+        $list = new ToDoList;
+
+        $list->title = $request->title;
+        
     }
 
    

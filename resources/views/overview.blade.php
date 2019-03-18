@@ -2,11 +2,11 @@
 
 @section('content')
 
-<div class="container">
-    <div class="row justify-content-left">
-        
+<div class="container">       
 
-            @if(sizeof($tdlists) > 0)
+    @if(sizeof($tdlists) > 0)
+
+            <div class="row justify-content-left">
 
                 @foreach($tdlists as $tdlist)
                     <div class="col-md-4">
@@ -39,7 +39,13 @@
                         </div>
                     </div>
                 @endforeach
-
+            </div>
+            @else
+            <div class="row justify-content-center">
+            <h1>Er zijn geen lijsten.</h1>
+            </div>
+            @endif
+            <div class="row justify-content-left">
                 <div class="col-md-4">
 
                         <div class="card">
@@ -54,10 +60,6 @@
 
                         </div>
                 </div>
-            @else
-            <h1>Er zijn geen lijsten.</h1>
-            @endif
-        
     </div>
 </div>
 
