@@ -3,23 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use App\Task;
 use App\ToDoList;
+use App\User;
 
 class ListsController extends Controller
 {
-    
-
     public function index()
     {
-        $TDLists = ToDoList::all();
+        $tdlists = ToDoList::all();
+        $users = User::all();
+        $tasks = Task::all();
 
-        return view('overview')->with($TDLists);
+        return view('overview')->with('tdlists', $tdlists)->with('users', $users)->with('tasks', $tasks);
     }
 
     
     public function create()
     {
-        //
+        $users = User::pluck('name', 'id');
+        return view('list/create')->with('users', $users);
     }
 
 

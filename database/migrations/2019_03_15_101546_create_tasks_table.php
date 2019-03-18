@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ToDoLists extends Migration
+class CreateTasksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,15 @@ class ToDoLists extends Migration
      */
     public function up()
     {
-        Schema::create('ToDoLists', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title');
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->text('description');
+            $table->float('minutes');
+            $table->string('status');
+            $table->unsignedBigInteger('list_id');
+            $table->foreign('list_id')->references('id')->on('ToDoLists')->onDelete('cascade');
             $table->timestamps();
-        });    
+        });
     }
 
     /**
@@ -29,6 +31,6 @@ class ToDoLists extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('tasks');
     }
 }
