@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Task;
 use App\ToDoList;
@@ -22,8 +23,8 @@ class ListsController extends Controller
     
     public function create()
     {
-        $users = User::pluck('name', 'id');
-        return view('list/create')->with('users', $users);
+        $user = Auth::user();
+        return view('list.create')->with('user', $user);
     }
 
 
@@ -37,30 +38,43 @@ class ListsController extends Controller
         $list = new ToDoList;
 
         $list->title = $request->title;
-        
-    }
+        $list->user_id = $request->user;
 
-   
-    public function show($id)
-    {
-        //
+        $list->save();
+
+        return redirect()->route('index');
     }
 
    
     public function edit($id)
     {
-        //
+        $list = ToDoList::find($id);
+        $user = Auth::user();
+        return view('list.edit')->with('user', $user)->with('list', $list);
     }
 
     
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+        ]);
+
+        $list = ToDoList::find($id);
+        
+        $list->title = $request->title;
+        $list->user_id = $request->user;
+
+        $list->save();
+
+        return redirect()->route('index');
     }
 
    
     public function destroy($id)
     {
-        //
+        ToDoList::find($id)->delete();
+
+        return redirect()->route('index');
     }
 }

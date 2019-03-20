@@ -10,17 +10,17 @@
 
             <div class="card">
 
-                <div class="card-header text-center">Lijst aanmaken</div>
+                <div class="card-header text-center">Lijst wijzigen</div>
 
                 <div class="card-body">
 
-                    {!! Form::open(['action' => 'ListsController@store', 'method' => 'POST']) !!}
+                    {!! Form::open(['action' => ['ListsController@update', $list->id], 'method' => 'POST']) !!}
 
                         <div class="form-group">
                             
                             {{ Form::label('title', 'Titel:') }}
 
-                            {{ Form::text('title', '', ['class' => 'form-control', 'placeholder' => 'Titel', 'required' => 'required']) }}
+                            {{ Form::text('title', $list->title, ['class' => 'form-control', 'placeholder' => 'Titel', 'required' => 'required']) }}
 
                         </div>
 
@@ -34,13 +34,15 @@
                                 
                                 {{ Form::label('user', 'Naam') }}
 
-                                {{ Form::select('user', [$user->id => $user->name, null => 'Geen naam toevoegen'], $user->id,['class' => 'form-control']) }}
+                                {{ Form::select('user', [$user->id => $user->name, null => 'Geen naam toevoegen'], $list->user_id,['class' => 'form-control']) }}
 
                             </div>
 
                         @endguest
 
-                        {{ Form::submit('creëren', ['class' => 'btn btn-primary']) }}
+                        {{Form::hidden('_method', 'PUT')}}
+
+                        {{ Form::submit('wijzigen', ['class' => 'btn btn-primary']) }}
                     
                         <a href={{ route('index')}} class="btn btn-danger">annuleren</a> 
 

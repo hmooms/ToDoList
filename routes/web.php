@@ -15,7 +15,16 @@
 //     return view('welcome');
 // });
 
-Route::resource('/', 'ListsController');
+Route::resource('/list', 'ListsController')->except([
+    'index'
+]);
+Route::resource('/task', 'TasksController')->except([
+    'create',
+    'edit'
+]);
+Route::get('/', 'ListsController@index')->name('index');
+Route::get('/list/{list}/add', 'TasksController@create')->name('task.create');
+Route::get('/list/{list}/edit/{task}', 'TasksController@edit')->name('task.edit');
 
 Auth::routes();
 
