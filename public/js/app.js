@@ -49013,11 +49013,16 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 
 var app = new Vue({
   el: '#app'
-}); //------Ask for confirmation------\\
+});
 
-function confirmDelete(deleted) {
-  var result = confirm(deleted == 'list' ? 'Weet u zeker dat u deze lijst wilt verwijderen?' : 'Weet u zeker dat u deze taak wilt verwijderen?');
-  if (result) return true;else return false;
+document.getElementById('sort').onclick = function () {
+  sortList();
+};
+
+function sortList() {
+  var selectList = document.getElementById("select-list").selectedIndex;
+  var selectedList = selectList.options[selectList.selectedIndex].value;
+  alert(selectedList);
 }
 
 /***/ }),

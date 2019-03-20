@@ -10668,3 +10668,13 @@ a.text-dark:focus {
   margin-bottom: 5px;
 }
 
+.sidenav {
+  width: 17%;
+  position: fixed;
+  z-index: 1;
+  top: 62px;
+  background: #efefef;
+  overflow-x: hidden;
+  padding: 15px;
+}
+

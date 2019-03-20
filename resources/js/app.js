@@ -31,3 +31,14 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app'
 });
+
+document.getElementById('sort').onclick = function(){sortList()};
+
+function sortList(){
+
+    var selectList = document.getElementById("select-list").selectedIndex;
+    var selectedList = selectList.options[selectList.selectedIndex].value;
+
+    alert(selectedList); 
+
+}

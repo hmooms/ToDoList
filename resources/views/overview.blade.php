@@ -2,38 +2,26 @@
 
 @section('content')
 
+@include('inc.sort')
+
 <div class="container">
 
     @if(sizeof($tdlists) > 0)
 
-            <div class="row justify-content-left">
+        <div class="row justify-content-left">
 
-                @foreach($tdlists as $tdlist)
-                   
-                    <div class="col-md-4">
+            @foreach($tdlists as $tdlist)
+                
+                <div class="col-md-4">
 
-                        <div class="card">
-                            
-                            <div class="card-header text-center">
+                    <div class="card">
+                        
+                        <div class="card-header text-center">
 
-                                @guest()
+                            @guest()
 
-                                    @if($tdlist->user_id == null)
+                                @if($tdlist->user_id == null)
 
-                                        {!!Form::open(['action' => ['ListsController@destroy', $tdlist->id], 'method' => 'POST', 'onSubmit' => 'return confirmDelete("list")'])!!}
-
-                                            {{Form::hidden('_method', 'DELETE')}}
-
-                                            {{Form::submit('X', ['class' => 'btn-danger', 'style' => 'float:left'])}}
-
-                                        {!!Form::close()!!}
-                                    
-                                        <a href="{{ route('list.edit', ['list' => $tdlist->id] )}} "><img src="{{ asset('edit.png') }}" alt="edit" style="float:right"></a>
-                                   
-                                    @endif
-
-                                @elseif($tdlist->user_id != null && Auth::user()->id == $tdlist->user_id || $tdlist->user_id == null)
-                                    
                                     {!!Form::open(['action' => ['ListsController@destroy', $tdlist->id], 'method' => 'POST', 'onSubmit' => 'return confirmDelete("list")'])!!}
 
                                         {{Form::hidden('_method', 'DELETE')}}
@@ -41,129 +29,141 @@
                                         {{Form::submit('X', ['class' => 'btn-danger', 'style' => 'float:left'])}}
 
                                     {!!Form::close()!!}
-
-                                    <a href="{{ route('list.edit', ['list' => $tdlist->id])}} "><img src="{{ asset('edit.png') }}" alt="edit" style="float:right"></a>
-
+                                
+                                    <a href="{{ route('list.edit', ['list' => $tdlist->id] )}} "><img src="{{ asset('edit.png') }}" alt="edit" style="float:right"></a>
+                                
                                 @endif
 
-                                {{$tdlist->title}}
-
-                            </div>
-
-                            <div class="card-body">
+                            @elseif($tdlist->user_id != null && Auth::user()->id == $tdlist->user_id || $tdlist->user_id == null)
                                 
-                                @foreach($tasks->where('list_id', $tdlist->id) as $task)
+                                {!!Form::open(['action' => ['ListsController@destroy', $tdlist->id], 'method' => 'POST', 'onSubmit' => 'return confirmDelete("list")'])!!}
 
-                                    <div class="card task">
+                                    {{Form::hidden('_method', 'DELETE')}}
 
-                                        <div class="card-header text-center">
+                                    {{Form::submit('X', ['class' => 'btn-danger', 'style' => 'float:left'])}}
 
-                                            @guest()
+                                {!!Form::close()!!}
 
-                                                @if($tdlist->user_id == null)
+                                <a href="{{ route('list.edit', ['list' => $tdlist->id])}} "><img src="{{ asset('edit.png') }}" alt="edit" style="float:right"></a>
 
-                                                    {!!Form::open(['action' => ['TasksController@destroy', $task->id], 'method' => 'POST', 'onSubmit' => 'return confirmDelete("task")'])!!}
+                            @endif
 
-                                                        {{Form::hidden('_method', 'DELETE')}}
+                            {{$tdlist->title}}
 
-                                                        {{Form::submit('X', ['class' => 'btn-danger', 'style' => 'float:left'])}}
+                        </div>
 
-                                                    {!!Form::close()!!}
+                        <div class="card-body" id="list{{$tdlist->id}}">
+                            
+                            @foreach($tasks->where('list_id', $tdlist->id) as $task)
 
-                                                    <a href="{{ route('task.edit', ['list' => $tdlist->id, 'task' => $task->id] )}} "><img src="{{ asset('edit.png') }}" alt="edit" style="float:right"></a>
+                                <div class="card task">
 
-                                                @endif
+                                    <div class="card-header text-center">
 
-                                                @elseif($tdlist->user_id != null && Auth::user()->id == $tdlist->user_id || $tdlist->user_id == null)
+                                        @guest()
 
-                                                    {!!Form::open(['action' => ['TasksController@destroy', $task->id], 'method' => 'POST', 'onSubmit' => 'return confirmDelete("task")'])!!}
+                                            @if($tdlist->user_id == null)
 
-                                                        {{Form::hidden('_method', 'DELETE')}}
+                                                {!!Form::open(['action' => ['TasksController@destroy', $task->id], 'method' => 'POST', 'onSubmit' => 'return confirmDelete("task")'])!!}
 
-                                                        {{Form::submit('X', ['class' => 'btn-danger', 'style' => 'float:left'])}}
+                                                    {{Form::hidden('_method', 'DELETE')}}
 
-                                                    {!!Form::close()!!}
+                                                    {{Form::submit('X', ['class' => 'btn-danger', 'style' => 'float:left'])}}
 
-                                                    <a href="{{ route('task.edit', ['list' => $tdlist->id, 'task' => $task->id] )}} "><img src="{{ asset('edit.png') }}" alt="edit" style="float:right"></a>
+                                                {!!Form::close()!!}
 
-                                                @endif
+                                                <a href="{{ route('task.edit', ['list' => $tdlist->id, 'task' => $task->id] )}} "><img src="{{ asset('edit.png') }}" alt="edit" style="float:right"></a>
 
-                                            {{$task->title}}
-                                            
-                                        </div>
-                                    
-                                        <div class="card-body">
+                                            @endif
 
-                                            <p>{{$task->description}}</p>
+                                            @elseif($tdlist->user_id != null && Auth::user()->id == $tdlist->user_id || $tdlist->user_id == null)
 
-                                            <hr>  
+                                                {!!Form::open(['action' => ['TasksController@destroy', $task->id], 'method' => 'POST', 'onSubmit' => 'return confirmDelete("task")'])!!}
 
-                                            <p>duur: {{$task->minutes}} minuten</p>                          
+                                                    {{Form::hidden('_method', 'DELETE')}}
 
-                                            status: {{$task->status}}
+                                                    {{Form::submit('X', ['class' => 'btn-danger', 'style' => 'float:left'])}}
 
-                                        </div>
+                                                {!!Form::close()!!}
+
+                                                <a href="{{ route('task.edit', ['list' => $tdlist->id, 'task' => $task->id] )}} "><img src="{{ asset('edit.png') }}" alt="edit" style="float:right"></a>
+
+                                            @endif
+
+                                        {{$task->title}}
                                         
                                     </div>
+                                
+                                    <div class="card-body">
 
+                                        <p>{{$task->description}}</p>
 
-                                @endforeach
+                                        <hr>  
 
-                                <div class="card">
+                                        <p>duur: {{$task->minutes}} minuten</p>                          
 
-                                    <div class="card-header text-center">Taak toevoegen</div>
-                                    
-                                    <div class="card-body text-center">
-
-                                        <a href="{{ route('task.create', ['list' => $tdlist->id])}} "><img src="{{ asset('add.png') }}" alt="+"></a>
+                                        status: <div id="status">{{$task->status}}</div>
 
                                     </div>
                                     
                                 </div>
+
+
+                            @endforeach
+
+                            <div class="card">
+
+                                <div class="card-header text-center">Taak toevoegen</div>
                                 
-                            </div>
+                                <div class="card-body text-center">
 
-                            @if($tdlist->user_id != null)
-                            
-                                <div class="text-center">
-
-                                    Lijst is toegevoegd door {{$users[$tdlist->user_id - 1]->name}}
+                                    <a href="{{ route('task.create', ['list' => $tdlist->id])}} "><img src="{{ asset('add.png') }}" alt="+"></a>
 
                                 </div>
-
-                            @endif                            
+                                
+                            </div>
                             
                         </div>
 
+                        @if($tdlist->user_id != null)
+                        
+                            <div class="text-center">
+
+                                Lijst is toegevoegd door {{$users[$tdlist->user_id - 1]->name}}
+
+                            </div>
+
+                        @endif                            
+                        
                     </div>
-
-                @endforeach
-
-            </div>
-
-            @else
-
-                <div class="row justify-content-center">
-
-                    	<h1>Er zijn geen lijsten.</h1>
 
                 </div>
 
-            @endif
+            @endforeach
 
-            <div class="row justify-content-left">
+        </div>
 
-                <div class="col-md-4">
+    @else
 
-                <div class="card">
+        <div class="row justify-content-center">
 
-                    <div class="card-header text-center">lijst toevoegen</div>
+                <h1>Er zijn geen lijsten.</h1>
 
-                    <div class="card-body">
-                    
-                        <a href="{{ route('list.create')}} "><img src="{{ asset('plus.svg') }}" alt="+"></a>
+        </div>
 
-                    </div>
+    @endif
+
+    <div class="row justify-content-left">
+
+        <div class="col-md-4">
+
+            <div class="card">
+
+                <div class="card-header text-center">lijst toevoegen</div>
+
+                <div class="card-body">
+                
+                    <a href="{{ route('list.create')}} "><img src="{{ asset('plus.svg') }}" alt="+"></a>
 
                 </div>
 
@@ -177,8 +177,6 @@
 
 <script>
 
-    //------Ask for confirmation------\\
-        
     function confirmDelete(deleted)
     {
         var result = confirm((deleted == 'list') ? 'Weet u zeker dat u deze lijst wilt verwijderen?' : 'Weet u zeker dat u deze taak wilt verwijderen?');
@@ -188,6 +186,18 @@
         else 
             return false;
     }
+        
+    // document.getElementById('sort').onclick = function(){sortList()};
+
+    // function sortList(){
+
+    //     var selectList = document.getElementById("select-list").selectedIndex;
+    //     var selectedList = selectList.options[selectList.selectedIndex].value;
+
+    //     alert(selectedList); 
+
+    // }
+
 
 </script>
 @endsection
