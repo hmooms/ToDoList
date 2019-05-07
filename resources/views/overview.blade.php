@@ -52,64 +52,83 @@
 
                         </div>
 
-                        <div class="card-body" id="list{{$tdlist->id}}">
-                            
-                            @foreach($tasks->where('list_id', $tdlist->id) as $task)
+                        <div class="card-body">
 
-                                <div class="card task">
+                            <div id="list{{$tdlist->id}}">
+                                
+                                @foreach($tasks->where('list_id', $tdlist->id) as $task)
 
-                                    <div class="card-header text-center">
+                                    <div class="card task" id="{{$task->status}}-{{$task->minutes}}-{{$task->id}}">
 
-                                        @guest()
+                                        <div class="card-header text-center">
 
-                                            @if($tdlist->user_id == null)
+                                            @guest()
 
-                                                {!!Form::open(['action' => ['TasksController@destroy', $task->id], 'method' => 'POST', 'onSubmit' => 'return confirmDelete("task")'])!!}
+                                                @if($tdlist->user_id == null)
 
-                                                    {{Form::hidden('_method', 'DELETE')}}
+                                                    {!!Form::open(['action' => ['TasksController@destroy', $task->id], 'method' => 'POST', 'onSubmit' => 'return confirmDelete("task")'])!!}
 
-                                                    {{Form::submit('X', ['class' => 'btn-danger', 'style' => 'float:left'])}}
+                                                        {{Form::hidden('_method', 'DELETE')}}
 
-                                                {!!Form::close()!!}
+                                                        {{Form::submit('X', ['class' => 'btn-danger', 'style' => 'float:left'])}}
 
-                                                <a href="{{ route('task.edit', ['list' => $tdlist->id, 'task' => $task->id] )}} "><img src="{{ asset('edit.png') }}" alt="edit" style="float:right"></a>
+                                                    {!!Form::close()!!}
 
-                                            @endif
+                                                    <a href="{{ route('task.edit', ['list' => $tdlist->id, 'task' => $task->id] )}} "><img src="{{ asset('edit.png') }}" alt="edit" style="float:right"></a>
 
-                                            @elseif($tdlist->user_id != null && Auth::user()->id == $tdlist->user_id || $tdlist->user_id == null)
+                                                @endif
 
-                                                {!!Form::open(['action' => ['TasksController@destroy', $task->id], 'method' => 'POST', 'onSubmit' => 'return confirmDelete("task")'])!!}
+                                                @elseif($tdlist->user_id != null && Auth::user()->id == $tdlist->user_id || $tdlist->user_id == null)
 
-                                                    {{Form::hidden('_method', 'DELETE')}}
+                                                    {!!Form::open(['action' => ['TasksController@destroy', $task->id], 'method' => 'POST', 'onSubmit' => 'return confirmDelete("task")'])!!}
 
-                                                    {{Form::submit('X', ['class' => 'btn-danger', 'style' => 'float:left'])}}
+                                                        {{Form::hidden('_method', 'DELETE')}}
 
-                                                {!!Form::close()!!}
+                                                        {{Form::submit('X', ['class' => 'btn-danger', 'style' => 'float:left'])}}
 
-                                                <a href="{{ route('task.edit', ['list' => $tdlist->id, 'task' => $task->id] )}} "><img src="{{ asset('edit.png') }}" alt="edit" style="float:right"></a>
+                                                    {!!Form::close()!!}
 
-                                            @endif
+                                                    <a href="{{ route('task.edit', ['list' => $tdlist->id, 'task' => $task->id] )}} "><img src="{{ asset('edit.png') }}" alt="edit" style="float:right"></a>
 
-                                        {{$task->title}}
+                                                @endif
+
+                                            {{$task->title}}
+                                            
+                                        </div>
+                                    
+                                        <div class="card-body">
+
+                                            <p>{{$task->description}}</p>
+
+                                            <hr>  
+
+                                            <p>duur: {{$task->minutes}} minuten</p>                          
+
+                                            <p>status: 
+                                                    
+                                                @switch($task->status)
+
+                                                @case(0)
+                                                    Nog niet begonnen
+                                                    @break
+
+                                                @case(1)
+                                                    Mee bezig
+                                                    @break
+
+                                                @case(2)
+                                                    Klaar
+                                                
+                                                @endswitch
+
+                                            </p>
+                                        </div>
                                         
                                     </div>
                                 
-                                    <div class="card-body">
+                                @endforeach
 
-                                        <p>{{$task->description}}</p>
-
-                                        <hr>  
-
-                                        <p>duur: {{$task->minutes}} minuten</p>                          
-
-                                        status: <div id="status">{{$task->status}}</div>
-
-                                    </div>
-                                    
-                                </div>
-
-
-                            @endforeach
+                            </div>
 
                             <div class="card">
 
@@ -177,6 +196,7 @@
 
 <script>
 
+// TODO replace this to app.js
     function confirmDelete(deleted)
     {
         var result = confirm((deleted == 'list') ? 'Weet u zeker dat u deze lijst wilt verwijderen?' : 'Weet u zeker dat u deze taak wilt verwijderen?');
@@ -186,18 +206,6 @@
         else 
             return false;
     }
-        
-    // document.getElementById('sort').onclick = function(){sortList()};
-
-    // function sortList(){
-
-    //     var selectList = document.getElementById("select-list").selectedIndex;
-    //     var selectedList = selectList.options[selectList.selectedIndex].value;
-
-    //     alert(selectedList); 
-
-    // }
-
 
 </script>
 @endsection

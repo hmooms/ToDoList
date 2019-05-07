@@ -49020,9 +49020,35 @@ document.getElementById('sort').onclick = function () {
 };
 
 function sortList() {
-  var selectList = document.getElementById("select-list").selectedIndex;
-  var selectedList = selectList.options[selectList.selectedIndex].value;
-  alert(selectedList);
+  var selectedList = document.getElementById("select-list").value;
+  var selectedTask = document.getElementById("select-task").value;
+  var parent = document.getElementById('list' + selectedList);
+  var toSort = parent.children;
+  toSort = Array.prototype.slice.call(toSort, 0); // console.log(toSort, toSort[0].id.split('-')[0], toSort[1].id.split('-')[0], toSort[2].id.split('-')[0], toSort[3].id);
+
+  toSort.sort(function (a, b) {
+    var s1 = +a.id.split('-')[0];
+    var s2 = +b.id.split('-')[0];
+    var m1 = a.id.split('-')[1];
+    var m2 = b.id.split('-')[1];
+
+    if (selectedTask == "status") {
+      if (s1 - s2 != 0) return s1 - s2;else return m1 - m2;
+    } else {
+      if (m1 - m2 != 0) {
+        return m1 - m2;
+      } else {
+        return s1 - s2;
+      }
+    }
+  });
+  parent.innerHTML = "";
+
+  for (var i = 0, l = toSort.length; i < l; i++) {
+    parent.appendChild(toSort[i]);
+  }
+
+  console.log(toSort, toSort[0].id.split('-')[1], selectedTask);
 }
 
 /***/ }),
@@ -49172,8 +49198,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\Program Files (x86)\Ampps\www\ToDolist\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\Program Files (x86)\Ampps\www\ToDolist\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Program Files (x86)\Ampps\www\ToDoList\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Program Files (x86)\Ampps\www\ToDoList\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

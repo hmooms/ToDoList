@@ -14,7 +14,7 @@
 
                 <div class="card-body">
 
-                    {!! Form::open(['action' => 'TasksController@store', 'method' => 'POST']) !!}
+                    {!! Form::open(['action' => 'TasksController@update', 'method' => 'POST']) !!}
 
                         <div class="form-group">
                             
@@ -44,8 +44,7 @@
                             
                             {{ Form::label('status', 'Status:') }}
 
-                            {{ Form::select('status', ['Nog niet begonnen' => 'Nog niet begonnen', 'Mee bezig' => 'Mee bezig', 'Klaar' => 'Klaar'], $task->status, ['class' => 'form-control', 'required' => 'required']) }}
-
+                            {{ Form::select('status', ['0' => 'Nog niet begonnen', '1' => 'Mee bezig', '2' => 'Klaar'], $task->status, ['class' => 'form-control', 'required' => 'required']) }}
                         </div>
 
                         {{ Form::hidden('list_id', $list->id) }}

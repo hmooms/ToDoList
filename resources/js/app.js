@@ -35,10 +35,42 @@ const app = new Vue({
 document.getElementById('sort').onclick = function(){sortList()};
 
 function sortList(){
+ 
+    var selectedList = document.getElementById("select-list").value;
+    var selectedTask = document.getElementById("select-task").value;
+    var parent = document.getElementById('list'+ selectedList);
+    var toSort = parent.children;
 
-    var selectList = document.getElementById("select-list").selectedIndex;
-    var selectedList = selectList.options[selectList.selectedIndex].value;
+    toSort = Array.prototype.slice.call(toSort, 0);
+    // console.log(toSort, toSort[0].id.split('-')[0], toSort[1].id.split('-')[0], toSort[2].id.split('-')[0], toSort[3].id);
 
-    alert(selectedList); 
 
+    toSort.sort(function(a, b) {
+        var s1 = +a.id.split('-')[0];
+        var s2 = +b.id.split('-')[0];
+        var m1 = a.id.split('-')[1];
+        var m2 = b.id.split('-')[1];
+
+        if(selectedTask == "status"){
+            if (s1 - s2 != 0) 
+                return s1 - s2;
+            else
+                return m1 - m2;
+        } else {
+            if(m1 - m2 != 0){
+                return m1 - m2;
+            }
+            else {
+                return s1 - s2;
+            }
+        }   
+    });
+
+    parent.innerHTML = "";
+
+    for(var i = 0, l = toSort.length; i < l; i++) {
+        parent.appendChild(toSort[i]);
+    }
+
+    console.log(toSort, toSort[0].id.split('-')[1], selectedTask);
 }

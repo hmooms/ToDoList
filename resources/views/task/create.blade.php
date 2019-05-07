@@ -36,7 +36,7 @@
                             
                             {{ Form::label('minutes', 'Minuten:') }}
 
-                            {{ Form::number('minutes', '', ['class' => 'form-control', 'placeholder' => '60', 'required' => 'required']) }}
+                            {{ Form::number('minutes', '', ['class' => 'form-control', 'placeholder' => '60', 'required' => 'required', 'max' => '1440']) }}
 
                         </div>
 
@@ -44,7 +44,7 @@
                             
                             {{ Form::label('status', 'Status:') }}
 
-                            {{ Form::select('status', ['Nog niet begonnen' => 'Nog niet begonnen', 'Mee bezig' => 'Mee bezig', 'Klaar' => 'Klaar'], 'Nog niet begonnen', ['class' => 'form-control', 'required' => 'required']) }}
+                            {{ Form::select('status', ['0' => 'Nog niet begonnen', '1' => 'Mee bezig', '2' => 'Klaar'], '0', ['class' => 'form-control', 'required' => 'required']) }}
 
                         </div>
 
